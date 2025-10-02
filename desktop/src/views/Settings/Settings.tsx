@@ -52,10 +52,12 @@ import {
   useProxyOptions,
   useSSHKeySignatureOption,
 } from "./useSettingsOptions"
+import { SecretsSettings } from "./SecretsSettings"
 
 const SETTINGS_TABS = [
   { label: "General", component: <GeneralSettings /> },
   { label: "Customization", component: <CustomizationSettings /> },
+  { label: "Secrets", component: <SecretsSettings /> },
   { label: "Appearance", component: <AppearanceSettings /> },
   { label: "Updates", component: <UpdateSettings /> },
   { label: "Experimental", component: <ExperimentalSettings /> },

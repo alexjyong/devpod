@@ -308,6 +308,22 @@ export type TGitCredentialHelperData = Readonly<{
   password: string
 }>
 
+export type TSecretScope = "global" | "provider" | "workspace"
+
+export type TSecret = Readonly<{
+  name: string
+  value: string
+  scope: TSecretScope
+  target?: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+}>
+
+export type TSecretStore = Readonly<{
+  secrets: Record<string, TSecret>
+}>
+
 export function isWithWorkspaceID(arg: unknown): arg is TWithWorkspaceID {
   return typeof arg === "object" && arg !== null && "workspaceID" in arg
 }

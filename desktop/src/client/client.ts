@@ -21,6 +21,7 @@ import { IDEsClient } from "./ides"
 import { ProClient } from "./pro"
 import { DaemonClient } from "./pro/client"
 import { ProvidersClient } from "./providers"
+import { SecretsClient } from "./secrets"
 import { TAURI_SERVER_URL } from "./tauriClient"
 import { WorkspacesClient } from "./workspaces"
 
@@ -88,6 +89,7 @@ class Client {
   public readonly ides = new IDEsClient()
   public readonly context = new ContextClient()
   public readonly pro = new ProClient("")
+  public readonly secrets = new SecretsClient()
 
   public setSetting<TSettingName extends keyof TClientSettings>(
     name: TSettingName,

@@ -15,6 +15,7 @@ import (
 
 	"github.com/loft-sh/devpod/pkg/command"
 	"github.com/loft-sh/devpod/pkg/devcontainer/config"
+	"github.com/loft-sh/devpod/pkg/secret"
 	"github.com/loft-sh/devpod/pkg/types"
 	"github.com/loft-sh/log"
 	"github.com/sirupsen/logrus"
@@ -28,6 +29,18 @@ func RunLifecycleHooks(ctx context.Context, setupInfo *config.Result, log log.Lo
 		log.Errorf("failed to probe environment, this might lead to an incomplete setup of your workspace: %w", err)
 	}
 	remoteEnv := mergeRemoteEnv(mergedConfig.RemoteEnv, probedEnv, remoteUser)
+
+	workspaceID := os.Getenv("DEVPOD_WORKSPACE_ID")
+	providerName := os.Getenv("DEVPOD_PROVIDER_NAME")
+	if workspaceID != "" || providerName != "" {
+		store, err := secret.LoadSecretStore()
+		if err == nil {
+			secrets := store.GetSecretsForWorkspace(workspaceID, providerName)
+			for k, v := range secrets {
+				remoteEnv[k] = v
+			}
+		}
+	}
 
 	workspaceFolder := setupInfo.SubstitutionContext.ContainerWorkspaceFolder
 	containerDetails := setupInfo.ContainerDetails

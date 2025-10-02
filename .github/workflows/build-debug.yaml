@@ -26,27 +26,27 @@ jobs:
             os: darwin
             arch: amd64
             cli_only: false
-            build_condition: ${{ github.event.inputs.os_selection == 'all' || github.event.inputs.os_selection == 'macos-intel' }}
+            platform: macos-intel
           - host: macos-latest
             target: aarch64-apple-darwin
             os: darwin
             arch: arm64
             cli_only: false
-            build_condition: ${{ github.event.inputs.os_selection == 'all' || github.event.inputs.os_selection == 'macos-arm' }}
+            platform: macos-arm
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             arch: amd64
             cli_only: false
-            build_condition: ${{ github.event.inputs.os_selection == 'all' || github.event.inputs.os_selection == 'windows' }}
+            platform: windows
           - host: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             os: linux
             arch: amd64
             cli_only: false
-            build_condition: ${{ github.event.inputs.os_selection == 'all' || github.event.inputs.os_selection == 'linux' }}
+            platform: linux
     name: ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
-    if: ${{ matrix.settings.build_condition }}
+    if: ${{ github.event.inputs.os_selection == 'all' || github.event.inputs.os_selection == matrix.settings.platform }}
     env:
       GO111MODULE: on
       GOFLAGS: -mod=vendor

@@ -1,4 +1,4 @@
-import { Failed, Return, Result } from "../../lib"
+import { Return, Result } from "../../lib"
 import { TSecret, TSecretScope } from "../../types"
 import { Command } from "../command"
 
@@ -22,7 +22,7 @@ export class SecretsClient {
       const output = result.val.stdout
       const lines = output.split("\n").filter((l: string) => l.trim() && !l.startsWith("NAME"))
       const secrets: TSecret[] = lines
-        .map((line: string) => {
+        .map((line: string): TSecret | null => {
           const parts = line.trim().split(/\s+/)
           if (parts.length < 2) return null
 

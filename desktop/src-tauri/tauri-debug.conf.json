@@ -58,12 +58,14 @@
       "deb": {
         "depends": []
       }
-    }
+    },
+    "createUpdaterArtifacts": false
   },
   "productName": "DevPod Debug",
   "mainBinaryName": "DevPod Desktop Debug",
   "version": "../package.json",
   "identifier": "sh.loft.devpod.debug",
+  "plugins": {},
   "app": {
     "withGlobalTauri": false,
     "macOSPrivateApi": true,

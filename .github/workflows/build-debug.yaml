@@ -132,7 +132,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0.5.15
         with:
           projectPath: "./desktop"
-          args: "--config src-tauri/tauri-flatpak.conf.json --target ${{ matrix.settings.target }} --bundles appimage,deb"
+          args: "--config src-tauri/tauri-debug.conf.json --target ${{ matrix.settings.target }} --bundles appimage,deb"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -149,7 +149,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0.5.15
         with:
           projectPath: "./desktop"
-          args: "--target ${{ matrix.settings.target }}"
+          args: "--config src-tauri/tauri-debug.conf.json --target ${{ matrix.settings.target }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -171,7 +171,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0.5.15
         with:
           projectPath: "./desktop"
-          args: " --target ${{ matrix.settings.target }}"
+          args: "--config src-tauri/tauri-debug.conf.json --target ${{ matrix.settings.target }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}

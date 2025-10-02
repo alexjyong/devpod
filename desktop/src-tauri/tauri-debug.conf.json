@@ -1,0 +1,92 @@
+{
+  "build": {
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "bundle": {
+    "active": true,
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "nsis": {
+        "displayLanguageSelector": false,
+        "installMode": "currentUser"
+      }
+    },
+    "category": "DeveloperTool",
+    "copyright": "",
+    "externalBin": [
+      "bin/devpod-cli"
+    ],
+    "resources": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "shortDescription": "Spin up dev environments in any infra (DEBUG BUILD)",
+    "longDescription": "Dev-environments-as-code like Terraform but for dev environments. Like Codespaces but open-source, client-only and unopinionated: Works with any IDE and lets you use any cloud, kubernetes or just on localhost docker.",
+    "targets": "all",
+    "macOS": {
+      "entitlements": "./entitlements.plist",
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null,
+      "dmg": {
+        "background": "dmg-background.png",
+        "windowSize": {
+          "width": 660,
+          "height": 400
+        },
+        "appPosition": {
+          "x": 180,
+          "y": 160
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 160
+        }
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+  },
+  "productName": "DevPod Debug",
+  "mainBinaryName": "DevPod Desktop Debug",
+  "version": "../package.json",
+  "identifier": "sh.loft.devpod.debug",
+  "app": {
+    "withGlobalTauri": false,
+    "macOSPrivateApi": true,
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "DevPod Debug",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 1000,
+        "minHeight": 700,
+        "x": 0,
+        "y": 0,
+        "focus": false,
+        "titleBarStyle": "Overlay",
+        "fullscreen": false,
+        "resizable": true,
+        "hiddenTitle": true,
+        "transparent": true,
+        "visible": false
+      }
+    ]
+  }
+}

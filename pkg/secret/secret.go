@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/loft-sh/devpod/pkg/config"
 	"github.com/loft-sh/devpod/pkg/types"
@@ -131,7 +130,7 @@ func (s *SecretStore) AddSecret(secret *Secret) error {
 
 	id := SecretID(secret.Name, secret.Scope, secret.Target)
 
-	now := types.Time(time.Now())
+	now := types.Now()
 	if s.Secrets[id] == nil {
 		secret.CreatedAt = now
 	} else {

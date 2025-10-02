@@ -1,10 +1,8 @@
-import { Result, ResultError } from "../../lib"
-import { TSecret, TSecretScope, TSecretStore } from "../../types"
-import { DevPodCommand } from "../command"
+import { Failed, Return, Result } from "../../lib"
+import { TSecret, TSecretScope } from "../../types"
+import { Command } from "../command"
 
 export class SecretsClient {
-  private command = new DevPodCommand()
-
   async list(scope?: TSecretScope, target?: string): Promise<Result<TSecret[]>> {
     const args = ["secret", "list"]
     if (scope) {
@@ -14,14 +12,16 @@ export class SecretsClient {
       args.push("--target", target)
     }
 
-    const result = await this.command.run(args)
+    const command = new Command(args)
+    const result = await command.run()
     if (result.err) {
-      return result
+      return Return.Failed("Failed to list secrets", result.val.message)
     }
 
     try {
-      const lines = result.val.split("\n").filter((l) => l.trim() && !l.startsWith("NAME"))
-      const secrets: TSecret[] = lines.map((line) => {
+      const output = result.val.stdout
+      const lines = output.split("\n").filter((l: string) => l.trim() && !l.startsWith("NAME"))
+      const secrets: TSecret[] = lines.map((line: string) => {
         const parts = line.split(/\s+/)
         return {
           name: parts[0],
@@ -34,9 +34,9 @@ export class SecretsClient {
         }
       })
 
-      return { ok: true, val: secrets }
+      return Return.Value(secrets)
     } catch (err) {
-      return { ok: false, val: new ResultError("Failed to parse secrets", err) }
+      return Return.Failed("Failed to parse secrets", String(err))
     }
   }
 
@@ -49,12 +49,13 @@ export class SecretsClient {
       args.push("--description", secret.description)
     }
 
-    const result = await this.command.run(args)
+    const command = new Command(args)
+    const result = await command.run()
     if (result.err) {
-      return result
+      return Return.Failed("Failed to set secret", result.val.message)
     }
 
-    return { ok: true, val: undefined }
+    return Return.Ok()
   }
 
   async delete(name: string, scope: TSecretScope, target?: string): Promise<Result<void>> {
@@ -63,11 +64,12 @@ export class SecretsClient {
       args.push("--target", target)
     }
 
-    const result = await this.command.run(args)
+    const command = new Command(args)
+    const result = await command.run()
     if (result.err) {
-      return result
+      return Return.Failed("Failed to delete secret", result.val.message)
     }
 
-    return { ok: true, val: undefined }
+    return Return.Ok()
   }
 }

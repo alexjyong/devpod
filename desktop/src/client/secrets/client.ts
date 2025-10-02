@@ -21,18 +21,22 @@ export class SecretsClient {
     try {
       const output = result.val.stdout
       const lines = output.split("\n").filter((l: string) => l.trim() && !l.startsWith("NAME"))
-      const secrets: TSecret[] = lines.map((line: string) => {
-        const parts = line.split(/\s+/)
-        return {
-          name: parts[0],
-          scope: parts[1] as TSecretScope,
-          target: parts[2] === "-" ? undefined : parts[2],
-          description: parts.slice(3).join(" ") || undefined,
-          value: "",
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        }
-      })
+      const secrets: TSecret[] = lines
+        .map((line: string) => {
+          const parts = line.trim().split(/\s+/)
+          if (parts.length < 2) return null
+
+          return {
+            name: parts[0]!,
+            scope: parts[1] as TSecretScope,
+            target: parts[2] === "-" ? undefined : parts[2],
+            description: parts.slice(3).join(" ") || undefined,
+            value: "",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }
+        })
+        .filter((s: TSecret | null): s is TSecret => s !== null)
 
       return Return.Value(secrets)
     } catch (err) {

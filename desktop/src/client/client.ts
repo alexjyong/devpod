@@ -317,7 +317,7 @@ class Client {
         const home_dir = await this.getEnv("HOME")
         // this will throw if doesn't exist
         const exists = await invoke<boolean>("file_exists", {
-          filepath: home_dir + "/.local/bin/devpod-secrets",
+          filepath: home_dir + "/.local/bin/devpod-secrets-cli",
         })
 
         return Return.Value(exists)

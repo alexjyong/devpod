@@ -164,7 +164,7 @@ jobs:
       - name: Build Sidecar CLI
         if: matrix.settings.host != 'windows-latest'
         run: |
-          BIN_NAME=devpod-cli-${{ matrix.settings.target }}
+          BIN_NAME=devpod-secrets-cli-${{ matrix.settings.target }}
           GOOS=${{ matrix.settings.os }} GOARCH=${{ matrix.settings.arch }} CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version="v${{ needs.create-release.outputs.original_package_version }}" -X github.com/loft-sh/devpod/pkg/telemetry.telemetryPrivateKey=${{ secrets.DEVPOD_TELEMETRY_PRIVATE_KEY }} -X github.com/loft-sh/devpod/pkg/devcontainer/crane.craneSigningKey="${{ secrets.CRANE_PRIVATE_KEY }}"" -o "test/$BIN_NAME"
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
           ls desktop/src-tauri/bin
@@ -175,7 +175,7 @@ jobs:
         run: |
           set GOOS=windows
           set GOARCH=${{ matrix.settings.arch }}
-          set BIN_NAME=devpod-cli-${{ matrix.settings.target }}.exe
+          set BIN_NAME=devpod-secrets-cli-${{ matrix.settings.target }}.exe
 
           go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version="v${{ needs.create-release.outputs.original_package_version }}" -X github.com/loft-sh/devpod/pkg/telemetry.telemetryPrivateKey=${{ secrets.DEVPOD_TELEMETRY_PRIVATE_KEY }}" -o "test\%BIN_NAME%"
 
@@ -311,7 +311,7 @@ jobs:
           $totp_secret = "$Env:CODESIGNTOOL_TOTP_SECRET"
           $credential_id = "$Env:CODESIGNTOOL_CREDENTIAL_ID"
 
-          $cli_input_file_path = "desktop\src-tauri\bin\devpod-cli-${{ matrix.settings.target }}.exe"
+          $cli_input_file_path = "desktop\src-tauri\bin\devpod-secrets-cli-${{ matrix.settings.target }}.exe"
 
           Write-Output "Signing files"
           $cli_input_file_path = Resolve-Path  "$cli_input_file_path" | select -ExpandProperty Path
@@ -345,8 +345,8 @@ jobs:
             // const nsisZipSigName = `${nsisName}.nsis.zip.sig`
             // const nsisZipSigPath = `desktop/src-tauri/target/${{ matrix.settings.target }}/release/bundle/nsis/${nsisZipSigName}`
 
-            const cliName = "devpod-windows-${{ matrix.settings.arch }}.exe"
-            const cliPath = "desktop/src-tauri/bin/devpod-cli-${{ matrix.settings.target }}.exe"
+            const cliName = "devpod-secrets-windows-${{ matrix.settings.arch }}.exe"
+            const cliPath = "desktop/src-tauri/bin/devpod-secrets-cli-${{ matrix.settings.target }}.exe"
 
             const releaseId = "${{ needs.create-release.outputs.release_id }}"
 
@@ -386,8 +386,8 @@ jobs:
             const fs = require("fs")
 
             const releaseId = "${{ needs.create-release.outputs.release_id }}"
-            const assetName = "devpod-${{ matrix.settings.os }}-${{ matrix.settings.arch }}"
-            const assetPath = "desktop/src-tauri/bin/devpod-cli-${{ matrix.settings.target }}"
+            const assetName = "devpod-secrets-${{ matrix.settings.os }}-${{ matrix.settings.arch }}"
+            const assetPath = "desktop/src-tauri/bin/devpod-secrets-cli-${{ matrix.settings.target }}"
 
             console.log("Attempting to upload release asset: ", assetName)
 
@@ -516,7 +516,7 @@ jobs:
 
           VERSION="v${{ needs.create-release.outputs.original_package_version }}"
           OUT_DIR="release"
-          ASSETS="devpod-darwin-amd64 devpod-darwin-arm64 devpod-linux-amd64 devpod-linux-arm64 devpod-windows-amd64.exe"
+          ASSETS="devpod-secrets-darwin-amd64 devpod-secrets-darwin-arm64 devpod-secrets-linux-amd64 devpod-secrets-linux-arm64 devpod-secrets-windows-amd64.exe"
 
           echo "Prepare output directory $OUT_DIR..."
           if [ ! -d "$OUT_DIR" ]; then

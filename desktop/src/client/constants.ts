@@ -7,7 +7,7 @@ export const DEFAULT_STATIC_COMMAND_CONFIG = {
 /** placeholder for arbitrary additional flags */
 export const WORKSPACE_COMMAND_ADDITIONAL_FLAGS_KEY = "additionalFlags"
 
-export const DEVPOD_BINARY = "bin/devpod-cli"
+export const DEVPOD_BINARY = "bin/devpod-secrets-cli"
 export const DEVPOD_COMMAND_LIST = "list"
 export const DEVPOD_COMMAND_STATUS = "status"
 export const DEVPOD_COMMAND_UP = "up"
@@ -68,5 +68,5 @@ export const DEVPOD_FLAG_DOTFILES = "--dotfiles"
 export const DEVPOD_FLAG_GIT_SIGNING_KEY = "--git-ssh-signing-key"
 export const DEVPOD_FLAG_FORCE_BROWSER = "--force-browser"
 
-export const DEVPOD_UI_ENV_VAR = "DEVPOD_UI"
-export const DEVPOD_ADDITIONAL_ENV_VARS = "DEVPOD_ADDITIONAL_ENV_VARS"
+export const DEVPOD_UI_ENV_VAR = "DEVPOD_SECRETS_UI"
+export const DEVPOD_ADDITIONAL_ENV_VARS = "DEVPOD_SECRETS_ADDITIONAL_ENV_VARS"

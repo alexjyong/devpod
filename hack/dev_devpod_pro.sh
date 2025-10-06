@@ -12,9 +12,9 @@ fi
 
 if [[ $RACE == "yes" ]]; then
   echo "Building devpod with race detector"
-  CGO_ENABLED=1 go build -ldflags "-s -w" -tags profile -race -o devpod-cli
+  CGO_ENABLED=1 go build -ldflags "-s -w" -tags profile -race -o devpod-secrets-cli
 else
-  CGO_ENABLED=0 go build -ldflags "-s -w" -tags profile -o devpod-cli
+  CGO_ENABLED=0 go build -ldflags "-s -w" -tags profile -o devpod-secrets-cli
 fi
 
-kubectl -n $NS cp --no-preserve=true ./devpod-cli $(kubectl -n $NS get pods -l app=loft -o jsonpath="{.items[0].metadata.name}"):/usr/local/bin/devpod
+kubectl -n $NS cp --no-preserve=true ./devpod-secrets-cli $(kubectl -n $NS get pods -l app=loft -o jsonpath="{.items[0].metadata.name}"):/usr/local/bin/devpod

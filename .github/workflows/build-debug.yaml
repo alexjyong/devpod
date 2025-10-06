@@ -59,9 +59,11 @@ jobs:
 
       - name: Build Sidecar CLI
         run: |
-          BIN_NAME=devpod-cli-x86_64-apple-darwin
+          BIN_NAME=devpod-secrets-cli-x86_64-apple-darwin
           GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "test/$BIN_NAME"
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
+          # Create the generic name that Tauri expects
+          cp "test/$BIN_NAME" "desktop/src-tauri/bin/devpod-secrets-cli"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -131,9 +133,11 @@ jobs:
 
       - name: Build Sidecar CLI
         run: |
-          BIN_NAME=devpod-cli-aarch64-apple-darwin
+          BIN_NAME=devpod-secrets-cli-aarch64-apple-darwin
           GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "test/$BIN_NAME"
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
+          # Create the generic name that Tauri expects
+          cp "test/$BIN_NAME" "desktop/src-tauri/bin/devpod-secrets-cli"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -206,9 +210,10 @@ jobs:
         run: |
           set GOOS=windows
           set GOARCH=amd64
-          set BIN_NAME=devpod-cli-x86_64-pc-windows-msvc.exe
+          set BIN_NAME=devpod-secrets-cli-x86_64-pc-windows-msvc.exe
           go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "test\%BIN_NAME%"
           xcopy /F /Y "test\%BIN_NAME%" desktop\src-tauri\bin\*
+          copy "test\%BIN_NAME%" "desktop\src-tauri\bin\devpod-secrets-cli.exe"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -282,9 +287,11 @@ jobs:
 
       - name: Build Sidecar CLI
         run: |
-          BIN_NAME=devpod-cli-x86_64-unknown-linux-gnu
+          BIN_NAME=devpod-secrets-cli-x86_64-unknown-linux-gnu
           GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "test/$BIN_NAME"
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
+          # Create the generic name that Tauri expects
+          cp "test/$BIN_NAME" "desktop/src-tauri/bin/devpod-secrets-cli"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3

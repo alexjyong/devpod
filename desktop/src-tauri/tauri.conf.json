@@ -20,7 +20,7 @@
     "category": "DeveloperTool",
     "copyright": "",
     "externalBin": [
-      "bin/devpod-cli"
+      "bin/devpod-secrets-cli"
     ],
     "resources": [],
     "icon": [

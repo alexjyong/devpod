@@ -19,7 +19,7 @@
     "category": "DeveloperTool",
     "copyright": "",
     "externalBin": [
-      "bin/devpod-cli"
+      "bin/devpod-secrets-cli"
     ],
     "resources": [],
     "icon": [
@@ -29,7 +29,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "shortDescription": "Spin up dev environments in any infra (DEBUG BUILD)",
+    "shortDescription": "DevPod with secrets management (BETA BUILD)",
     "longDescription": "Dev-environments-as-code like Terraform but for dev environments. Like Codespaces but open-source, client-only and unopinionated: Works with any IDE and lets you use any cloud, kubernetes or just on localhost docker.",
     "targets": "all",
     "macOS": {
@@ -61,10 +61,10 @@
     },
     "createUpdaterArtifacts": false
   },
-  "productName": "DevPod Debug",
-  "mainBinaryName": "DevPod Desktop Debug",
+  "productName": "DevPod Secrets",
+  "mainBinaryName": "DevPod Secrets Desktop",
   "version": "../package.json",
-  "identifier": "sh.loft.devpod.debug",
+  "identifier": "sh.loft.devpod.secrets",
   "plugins": {},
   "app": {
     "withGlobalTauri": false,
@@ -74,7 +74,7 @@
     },
     "windows": [
       {
-        "title": "DevPod Debug",
+        "title": "DevPod Secrets",
         "width": 1200,
         "height": 800,
         "minWidth": 1000,

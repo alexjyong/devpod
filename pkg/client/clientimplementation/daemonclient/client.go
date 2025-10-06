@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	DevPodDebug = "DEVPOD_DEBUG"
+	DevPodDebug = "DEVPOD_SECRETS_DEBUG"
 
 	DevPodFlagsUp     = "DEVPOD_FLAGS_UP"
 	DevPodFlagsSsh    = "DEVPOD_FLAGS_SSH"

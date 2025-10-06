@@ -26,7 +26,7 @@ import (
 )
 
 var (
-	DevPodDebug = "DEVPOD_DEBUG"
+	DevPodDebug = "DEVPOD_SECRETS_DEBUG"
 
 	DevPodPlatformOptions = "DEVPOD_PLATFORM_OPTIONS"
 

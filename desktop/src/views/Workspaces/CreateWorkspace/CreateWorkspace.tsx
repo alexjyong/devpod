@@ -211,7 +211,7 @@ export function CreateWorkspace() {
                     href="https://containers.dev/implementors/json_reference/">
                     devcontainer standard
                   </Link>
-                  .
+                  . For private repositories, use SSH format (git@github.com:owner/repo.git) for easier authentication.
                 </FormHelperText>
               </VStack>
             </FormControl>

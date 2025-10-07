@@ -12,6 +12,7 @@ import (
 	"github.com/loft-sh/devpod/pkg/devcontainer/metadata"
 	"github.com/loft-sh/devpod/pkg/driver"
 	provider2 "github.com/loft-sh/devpod/pkg/provider"
+	"github.com/loft-sh/devpod/pkg/secret"
 	"github.com/pkg/errors"
 )
 
@@ -343,7 +344,48 @@ func (r *runner) addExtraEnvVars(env map[string]string) map[string]string {
 		env[WorkspaceUIDExtraEnvVar] = r.WorkspaceConfig.Workspace.UID
 	}
 
+	// inject secrets as environment variables
+	r.addSecretsToEnv(env)
+
 	return env
+}
+
+// addSecretsToEnv loads secrets from the secret store and adds them as environment variables
+func (r *runner) addSecretsToEnv(env map[string]string) {
+	if r.WorkspaceConfig == nil || r.WorkspaceConfig.Workspace == nil {
+		return
+	}
+
+	workspaceID := r.WorkspaceConfig.Workspace.ID
+	providerName := ""
+	if r.WorkspaceConfig.Workspace.Provider.Name != "" {
+		providerName = r.WorkspaceConfig.Workspace.Provider.Name
+	}
+
+	// Load secret store (this runs on the host)
+	store, err := secret.LoadSecretStore()
+	if err != nil {
+		// Don't fail the container creation if secrets can't be loaded
+		// Just log the error for debugging
+		if r.Log != nil {
+			r.Log.Debugf("Failed to load secret store: %v", err)
+		}
+		return
+	}
+
+	// Get secrets for this workspace and provider
+	secrets := store.GetSecretsForWorkspace(workspaceID, providerName)
+	if r.Log != nil {
+		r.Log.Debugf("Injecting %d secrets for workspace %s (provider: %s)", len(secrets), workspaceID, providerName)
+	}
+
+	// Add secrets as environment variables
+	for k, v := range secrets {
+		env[k] = v
+		if r.Log != nil {
+			r.Log.Debugf("Added secret: %s", k)
+		}
+	}
 }
 
 func GetStartScript(mergedConfig *config.MergedDevContainerConfig) string {

@@ -9,6 +9,7 @@ export const FieldName = {
   PROVIDER: "provider",
   PREBUILD_REPOSITORY: "prebuildRepository",
   DEVCONTAINER_PATH: "devcontainerPath",
+  DOCKER_PLATFORM: "dockerPlatform",
 } as const
 
 export type TFormValues = {
@@ -18,6 +19,7 @@ export type TFormValues = {
   [FieldName.ID]: string
   [FieldName.PREBUILD_REPOSITORY]: string
   [FieldName.DEVCONTAINER_PATH]?: string
+  [FieldName.DOCKER_PLATFORM]: string
 }
 
 export type TCreateWorkspaceSearchParams = ReturnType<
@@ -30,6 +32,7 @@ export type TCreateWorkspaceArgs = Readonly<{
   defaultIDE: string
   workspaceSource: string
   devcontainerPath: string | undefined
+  dockerPlatform: string
 }>
 export type TSelectProviderOptions = Readonly<{
   installed: readonly TNamedProvider[]

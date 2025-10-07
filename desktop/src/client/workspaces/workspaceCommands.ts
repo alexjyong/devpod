@@ -170,7 +170,17 @@ export class WorkspaceCommands {
       }
     }
 
-    return WorkspaceCommands.newCommand([
+    // Handle Docker platform by setting environment variable
+    if (config.dockerPlatform) {
+      // Add DOCKER_DEFAULT_PLATFORM as an environment variable
+      const currentEnvVars = Command.ADDITIONAL_ENV_VARS
+      const dockerPlatformEnv = `DOCKER_DEFAULT_PLATFORM=${config.dockerPlatform}`
+      Command.ADDITIONAL_ENV_VARS = currentEnvVars 
+        ? `${currentEnvVars},${dockerPlatformEnv}`
+        : dockerPlatformEnv
+    }
+
+    const command = WorkspaceCommands.newCommand([
       DEVPOD_COMMAND_UP,
       identifier,
       ...maybeIDFlag,
@@ -183,6 +193,15 @@ export class WorkspaceCommands {
       ...maybeProviderOptionsFlag,
       DEVPOD_FLAG_JSON_LOG_OUTPUT,
     ])
+
+    // Reset the environment variable after creating the command
+    if (config.dockerPlatform) {
+      const currentEnvVars = Command.ADDITIONAL_ENV_VARS
+      const dockerPlatformEnv = `DOCKER_DEFAULT_PLATFORM=${config.dockerPlatform}`
+      Command.ADDITIONAL_ENV_VARS = currentEnvVars.replace(dockerPlatformEnv, "").replace(/^,|,$|,,/g, "")
+    }
+
+    return command
   }
 
   static StopWorkspace(id: TWorkspaceID) {

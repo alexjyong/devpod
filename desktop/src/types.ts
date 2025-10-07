@@ -165,6 +165,7 @@ export type TWorkspaceStartConfig = Readonly<{
   id: string
   prebuildRepositories?: string[]
   devcontainerPath?: string
+  dockerPlatform?: string
   ideConfig?: TWorkspace["ide"]
   providerConfig?: Readonly<{ providerID?: TProviderID; options?: Record<string, string> }>
   // Instead of starting a workspace just by ID, the sourceConfig starts it with a `source/ID` combination

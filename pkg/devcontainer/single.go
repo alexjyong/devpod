@@ -24,11 +24,11 @@ const (
 	WorkspaceUIDExtraEnvVar     = "DEVPOD_WORKSPACE_UID"
 
 	DefaultEntrypoint = `
-while ! command -v /usr/local/bin/devpod >/dev/null 2>&1; do
-  echo "Waiting for devpod tool..."
+while ! command -v /usr/local/bin/devpod-secrets-cli >/dev/null 2>&1; do
+  echo "Waiting for devpod-secrets-cli tool..."
   sleep 1
 done
-exec /usr/local/bin/devpod agent container daemon
+exec /usr/local/bin/devpod-secrets-cli agent container daemon
 `
 )
 

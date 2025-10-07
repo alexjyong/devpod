@@ -17,4 +17,4 @@ else
   CGO_ENABLED=0 go build -ldflags "-s -w" -tags profile -o devpod-secrets-cli
 fi
 
-kubectl -n $NS cp --no-preserve=true ./devpod-secrets-cli $(kubectl -n $NS get pods -l app=loft -o jsonpath="{.items[0].metadata.name}"):/usr/local/bin/devpod
+kubectl -n $NS cp --no-preserve=true ./devpod-secrets-cli $(kubectl -n $NS get pods -l app=loft -o jsonpath="{.items[0].metadata.name}"):/usr/local/bin/devpod-secrets-cli

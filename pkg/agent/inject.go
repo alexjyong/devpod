@@ -124,7 +124,7 @@ func InjectAgentAndExecute(
 			}
 
 			if time.Since(lastMessage) > time.Second*5 {
-				log.Infof("Waiting for devpod agent to come up...")
+				log.Infof("Waiting for DevPod Secrets agent to come up...")
 				lastMessage = time.Now()
 			}
 
@@ -167,7 +167,7 @@ func injectBinary(arm bool, tryDownloadURL string, log log.Logger) (io.ReadClose
 		binaryPath = getRunnerBinary(targetArch)
 	}
 
-	// download devpod locally
+	// download devpod-secrets-cli locally
 	if binaryPath == "" {
 		binaryPath, err = downloadAgentLocally(tryDownloadURL, targetArch, log)
 		if err != nil {
@@ -196,12 +196,12 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 		return agentPath, nil
 	}
 
-	fullDownloadURL := tryDownloadURL + "/devpod-linux-" + targetArch
-	log.Debugf("Attempting to download DevPod agent from: %s", fullDownloadURL)
+	fullDownloadURL := tryDownloadURL + "/devpod-secrets-cli-linux-" + targetArch
+	log.Debugf("Attempting to download DevPod Secrets agent from: %s", fullDownloadURL)
 
 	resp, err := devpodhttp.GetHTTPClient().Get(fullDownloadURL)
 	if err != nil {
-		return "", fmt.Errorf("download devpod: %w", err)
+		return "", fmt.Errorf("download devpod-secrets-cli: %w", err)
 	}
 	defer resp.Body.Close()
 
@@ -209,7 +209,7 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 		return agentPath, nil
 	}
 
-	log.Infof("Download DevPod Agent...")
+	log.Infof("Download DevPod Secrets Agent...")
 	file, err := os.Create(agentPath)
 	if err != nil {
 		return "", fmt.Errorf("create agent binary: %w", err)
@@ -219,7 +219,7 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 	_, err = io.Copy(file, resp.Body)
 	if err != nil {
 		_ = os.Remove(agentPath)
-		return "", fmt.Errorf("failed to download devpod from URL %s: %w", fullDownloadURL, err)
+		return "", fmt.Errorf("failed to download devpod-secrets-cli from URL %s: %w", fullDownloadURL, err)
 	}
 
 	return agentPath, nil

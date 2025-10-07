@@ -63,7 +63,7 @@ func NewAddCmd(flags *flags.GlobalFlags) *cobra.Command {
 
 func (cmd *AddCmd) Run(ctx context.Context, devPodConfig *config.Config, args []string) error {
 	if len(args) != 1 && cmd.FromExisting == "" {
-		return fmt.Errorf("please specify either a local file, url or git repository. E.g. devpod provider add https://path/to/my/provider.yaml")
+		return fmt.Errorf("please specify either a local file, url or git repository. E.g. devpod-secrets-cli provider add https://path/to/my/provider.yaml")
 	} else if cmd.Name != "" && provider.ProviderNameRegEx.MatchString(cmd.Name) {
 		return fmt.Errorf("provider name can only include smaller case letters, numbers or dashes")
 	} else if cmd.Name != "" && len(cmd.Name) > 32 {
@@ -112,7 +112,7 @@ func (cmd *AddCmd) Run(ctx context.Context, devPodConfig *config.Config, args []
 	}
 
 	log.Default.Infof("To use the provider, please run the following command:")
-	log.Default.Infof("devpod provider use %s", providerConfig.Name)
+	log.Default.Infof("devpod-secrets-cli provider use %s", providerConfig.Name)
 	return nil
 }
 

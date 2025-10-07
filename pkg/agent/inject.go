@@ -240,15 +240,18 @@ func findBundledLinuxBinary(arch string, log log.Logger) string {
 	execDir := filepath.Dir(execPath)
 	binaryName := fmt.Sprintf("devpod-secrets-cli-linux-%s", arch)
 
-	// Possible locations for bundled binary
+	// Possible locations for bundled binary (Tauri resources)
 	searchPaths := []string{
-		// Same directory as executable (Windows/Linux)
-		filepath.Join(execDir, binaryName),
-		// macOS app bundle structure
+		// macOS app bundle structure (resources)
 		filepath.Join(execDir, "..", "Resources", binaryName),
-		filepath.Join(execDir, "..", "bin", binaryName),
-		// Alternative macOS structures
+		// Windows/Linux (resources in same directory)
 		filepath.Join(execDir, binaryName),
+		// Alternative macOS structures
+		filepath.Join(execDir, "..", "bin", binaryName),
+		// Same directory as executable fallback
+		filepath.Join(execDir, binaryName),
+		// Alternative resource paths
+		filepath.Join(execDir, "..", "..", "Resources", binaryName),
 	}
 
 	for _, bundledPath := range searchPaths {

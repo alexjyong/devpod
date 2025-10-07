@@ -19,11 +19,12 @@
     "category": "DeveloperTool",
     "copyright": "",
     "externalBin": [
-      "bin/devpod-secrets-cli",
+      "bin/devpod-secrets-cli"
+    ],
+    "resources": [
       "bin/devpod-secrets-cli-linux-amd64",
       "bin/devpod-secrets-cli-linux-arm64"
     ],
-    "resources": [],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

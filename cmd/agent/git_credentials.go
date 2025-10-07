@@ -68,6 +68,11 @@ func (cmd *GitCredentialsCmd) Run(ctx context.Context, args []string, log log.Lo
 		credentials = getCredentialsFromLocalMachine(credentialsReq, cmd.Port)
 	}
 
+	// if we still don't have credentials, fall back to host git credential system
+	if credentials == nil {
+		credentials = getCredentialsFromHostGit(credentialsReq, log)
+	}
+
 	// if we still don't have credentials, just return nothing
 	if credentials == nil {
 		return nil
@@ -154,4 +159,28 @@ func doRequest(httpClient *http.Client, credentials *gitcredentials.GitCredentia
 	}
 
 	return credentials, nil
+}
+
+func getCredentialsFromHostGit(credentialsReq *gitcredentials.GitCredentials, log log.Logger) *gitcredentials.GitCredentials {
+	// Fall back to using host git credential system directly
+	// This should work with osxkeychain and other native credential helpers
+	credentials, err := gitcredentials.GetCredentials(credentialsReq)
+	if err != nil {
+		// Log error but don't fail - this is a fallback
+		file, logErr := os.OpenFile("/tmp/git-credentials-error.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if logErr == nil {
+			defer file.Close()
+			_, _ = file.WriteString(fmt.Sprintf("get credentials from host git: %v\n", err))
+		}
+		return nil
+	}
+
+	// Log success for debugging
+	file, logErr := os.OpenFile("/tmp/git-credentials-error.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if logErr == nil {
+		defer file.Close()
+		_, _ = file.WriteString("successfully retrieved credentials from host git system\n")
+	}
+
+	return credentials
 }

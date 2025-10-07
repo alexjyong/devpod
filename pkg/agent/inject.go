@@ -242,16 +242,14 @@ func findBundledLinuxBinary(arch string, log log.Logger) string {
 
 	// Possible locations for bundled binary (Tauri resources)
 	searchPaths := []string{
-		// macOS app bundle structure (resources)
+		// macOS app bundle structure: Contents/MacOS/exe -> Contents/Resources/bin/binary
+		filepath.Join(execDir, "..", "Resources", "bin", binaryName),
+		// Alternative macOS structure
 		filepath.Join(execDir, "..", "Resources", binaryName),
 		// Windows/Linux (resources in same directory)
 		filepath.Join(execDir, binaryName),
-		// Alternative macOS structures
-		filepath.Join(execDir, "..", "bin", binaryName),
 		// Same directory as executable fallback
 		filepath.Join(execDir, binaryName),
-		// Alternative resource paths
-		filepath.Join(execDir, "..", "..", "Resources", binaryName),
 	}
 
 	for _, bundledPath := range searchPaths {

@@ -131,7 +131,7 @@ func listSecrets(ctx context.Context, cmd *cobra.Command) error {
 	secrets := store.ListSecrets(scope, target)
 
 	if len(secrets) == 0 {
-		log.Default.Info("No secrets found")
+		// don't output anything when there are no secrets let the client handle empty output
 		return nil
 	}
 

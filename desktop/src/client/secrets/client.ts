@@ -20,7 +20,13 @@ export class SecretsClient {
 
     try {
       const output = result.val.stdout
-      const lines = output.split("\n").filter((l: string) => l.trim() && !l.startsWith("NAME"))
+      const lines = output.split("\n").filter((l: string) => {
+        const trimmed = l.trim()
+
+        return trimmed && 
+               !trimmed.startsWith("NAME") && 
+               !trimmed.startsWith("----")
+      })
       const secrets: TSecret[] = lines
         .map((line: string): TSecret | null => {
           const parts = line.trim().split(/\s+/)

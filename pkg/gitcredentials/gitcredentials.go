@@ -221,7 +221,10 @@ func GetCredentials(requestObj *GitCredentials) (*GitCredentials, error) {
 	}
 
 	// use local credentials if not
-	c := git.CommandContext(context.TODO(), git.GetDefaultExtraEnv(false), "credential", "fill")
+	// Don't use GetDefaultExtraEnv here because GIT_TERMINAL_PROMPT=0 breaks osxkeychain and other interactive credential helpers
+	// Only set SSH-related env vars for credential operations
+	extraEnv := []string{"GIT_SSH_COMMAND=ssh -oBatchMode=yes -oStrictHostKeyChecking=no"}
+	c := git.CommandContext(context.TODO(), extraEnv, "credential", "fill")
 	c.Stdin = strings.NewReader(ToString(requestObj))
 	stdout, err := c.Output()
 	if err != nil {

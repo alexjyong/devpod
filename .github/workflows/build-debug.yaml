@@ -64,6 +64,10 @@ jobs:
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
           # Create the generic name that Tauri expects
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/devpod-secrets-cli"
+          
+          # Build Linux binaries for agent injection
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop/src-tauri/bin/devpod-secrets-cli-linux-amd64"
+          GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop/src-tauri/bin/devpod-secrets-cli-linux-arm64"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -138,6 +142,10 @@ jobs:
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/$BIN_NAME"
           # Create the generic name that Tauri expects
           cp "test/$BIN_NAME" "desktop/src-tauri/bin/devpod-secrets-cli"
+          
+          # Build Linux binaries for agent injection
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop/src-tauri/bin/devpod-secrets-cli-linux-amd64"
+          GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop/src-tauri/bin/devpod-secrets-cli-linux-arm64"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -214,6 +222,13 @@ jobs:
           go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "test\%BIN_NAME%"
           xcopy /F /Y "test\%BIN_NAME%" desktop\src-tauri\bin\*
           copy "test\%BIN_NAME%" "desktop\src-tauri\bin\devpod-secrets-cli.exe"
+          
+          REM Build Linux binaries for agent injection
+          set GOOS=linux
+          set GOARCH=amd64
+          go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop\src-tauri\bin\devpod-secrets-cli-linux-amd64"
+          set GOARCH=arm64
+          go build -ldflags "-s -w -X github.com/loft-sh/devpod/pkg/version.version=v0.0.0-debug" -o "desktop\src-tauri\bin\devpod-secrets-cli-linux-arm64"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3

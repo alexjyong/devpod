@@ -20,6 +20,6 @@ chmod +x $BUILD_DIR/devpod-secrets-cli-linux-amd64
 chmod +x $BUILD_DIR/devpod-secrets-cli-linux-arm64
 chmod +x $BUILD_DIR/devpod-secrets-cli-darwin-arm64
 chmod +x $BUILD_DIR/devpod-secrets-cli-darwin-amd64
-mkdir -p /tmp/devpod-cache
-cp $BUILD_DIR/devpod-secrets-cli-linux-amd64 /tmp/devpod-cache/devpod-secrets-cli-linux-amd64
-cp $BUILD_DIR/devpod-secrets-cli-linux-arm64 /tmp/devpod-cache/devpod-secrets-cli-linux-arm64
+mkdir -p /tmp/devpod-secrets-cache
+cp $BUILD_DIR/devpod-secrets-cli-linux-amd64 /tmp/devpod-secrets-cache/devpod-secrets-cli-linux-amd64
+cp $BUILD_DIR/devpod-secrets-cli-linux-arm64 /tmp/devpod-secrets-cache/devpod-secrets-cli-linux-arm64

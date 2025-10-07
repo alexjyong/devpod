@@ -162,6 +162,11 @@ func injectBinary(arm bool, tryDownloadURL string, log log.Logger) (io.ReadClose
 		}
 	}
 
+	// try to find bundled Linux binary (for desktop app)
+	if binaryPath == "" {
+		binaryPath = findBundledLinuxBinary(targetArch, log)
+	}
+
 	// try to look up runner binaries
 	if binaryPath == "" {
 		binaryPath = getRunnerBinary(targetArch)
@@ -185,7 +190,7 @@ func injectBinary(arm bool, tryDownloadURL string, log log.Logger) (io.ReadClose
 }
 
 func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (string, error) {
-	agentPath := filepath.Join(os.TempDir(), "devpod-cache", "devpod-linux-"+targetArch)
+	agentPath := filepath.Join(os.TempDir(), "devpod-secrets-cache", "devpod-secrets-cli-linux-"+targetArch)
 	err := os.MkdirAll(filepath.Dir(agentPath), 0755)
 	if err != nil {
 		return "", fmt.Errorf("create agent path: %w", err)
@@ -225,8 +230,40 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 	return agentPath, nil
 }
 
+func findBundledLinuxBinary(arch string, log log.Logger) string {
+	// Try to find bundled binary relative to current executable
+	execPath, err := os.Executable()
+	if err != nil {
+		return ""
+	}
+
+	execDir := filepath.Dir(execPath)
+	binaryName := fmt.Sprintf("devpod-secrets-cli-linux-%s", arch)
+
+	// Possible locations for bundled binary
+	searchPaths := []string{
+		// Same directory as executable (Windows/Linux)
+		filepath.Join(execDir, binaryName),
+		// macOS app bundle structure
+		filepath.Join(execDir, "..", "Resources", binaryName),
+		filepath.Join(execDir, "..", "bin", binaryName),
+		// Alternative macOS structures
+		filepath.Join(execDir, binaryName),
+	}
+
+	for _, bundledPath := range searchPaths {
+		if stat, err := os.Stat(bundledPath); err == nil && !stat.IsDir() {
+			log.Debugf("Found bundled Linux binary: %s", bundledPath)
+			return bundledPath
+		}
+	}
+
+	log.Debugf("No bundled Linux binary found for arch %s", arch)
+	return ""
+}
+
 func getRunnerBinary(targetArch string) string {
-	binaryPath := filepath.Join(os.TempDir(), "devpod-cache", "devpod-linux-"+targetArch)
+	binaryPath := filepath.Join(os.TempDir(), "devpod-secrets-cache", "devpod-secrets-cli-linux-"+targetArch)
 	_, err := os.Stat(binaryPath)
 	if err != nil {
 		return ""

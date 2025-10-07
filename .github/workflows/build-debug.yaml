@@ -54,10 +54,6 @@ jobs:
 
       - name: Go setup
         uses: actions/setup-go@v6
-        with:
-          go-version: 1.21.8
-          cache: true
-          cache-dependency-path: go.sum
 
       - name: Build Sidecar CLI
         run: |
@@ -134,10 +130,6 @@ jobs:
 
       - name: Go setup
         uses: actions/setup-go@v6
-        with:
-          go-version: 1.21.8
-          cache: true
-          cache-dependency-path: go.sum
 
       - name: Build Sidecar CLI
         run: |
@@ -214,10 +206,6 @@ jobs:
 
       - name: Go setup
         uses: actions/setup-go@v6
-        with:
-          go-version: 1.21.8
-          cache: true
-          cache-dependency-path: go.sum
 
       - name: Build Sidecar CLI
         shell: cmd
@@ -323,10 +311,6 @@ jobs:
 
       - name: Go setup
         uses: actions/setup-go@v6
-        with:
-          go-version: 1.21.8
-          cache: true
-          cache-dependency-path: go.sum
 
       - name: Build Sidecar CLI
         run: |

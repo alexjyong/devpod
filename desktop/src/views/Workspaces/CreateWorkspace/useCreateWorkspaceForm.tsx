@@ -77,6 +77,7 @@ export function useCreateWorkspaceForm(onCreateWorkspace: (args: TCreateWorkspac
           [FieldName.DEFAULT_IDE]: defaultIDE,
           [FieldName.DEVCONTAINER_PATH]: undefined,
           [FieldName.PREBUILD_REPOSITORY]: defaultPrebuildRepo,
+          [FieldName.DOCKER_PLATFORM]: "",
         }
       },
     })
@@ -224,6 +225,7 @@ export function useCreateWorkspaceForm(onCreateWorkspace: (args: TCreateWorkspac
           defaultIDE,
           workspaceSource,
           devcontainerPath: maybeDevcontainerPath,
+          dockerPlatform: data[FieldName.DOCKER_PLATFORM],
         })
       })(event),
     [

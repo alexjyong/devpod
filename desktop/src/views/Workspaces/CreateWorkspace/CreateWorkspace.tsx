@@ -14,6 +14,7 @@ import {
   Input,
   Link,
   Popover,
+  Select,
   PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
@@ -64,11 +65,13 @@ export function CreateWorkspace() {
       defaultIDE,
       workspaceSource,
       devcontainerPath,
+      dockerPlatform,
     }: TCreateWorkspaceArgs) => {
       const actionID = workspace.create({
         id: workspaceID,
         prebuildRepositories,
         devcontainerPath,
+        dockerPlatform,
         providerConfig: { providerID },
         ideConfig: { name: defaultIDE },
         sourceConfig: {
@@ -406,8 +409,24 @@ export function CreateWorkspace() {
                   </FormHelperText>
                 )}
               </FormControl>
-              {/* placholder box */}
-              <Box width={"full"} />
+              <FormControl>
+                <FormLabel>Docker Platform</FormLabel>
+                <Controller
+                  name={FieldName.DOCKER_PLATFORM}
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} placeholder="Auto-detect platform">
+                      <option value="">Auto-detect</option>
+                      <option value="linux/amd64">Linux AMD64 (x86_64)</option>
+                      <option value="linux/arm64">Linux ARM64</option>
+                    </Select>
+                  )}
+                />
+                <FormHelperText>
+                  Override Docker&apos;s default platform detection. Use <Code>linux/amd64</Code> when running
+                  x86-specific applications on ARM devices (slower due to emulation).
+                </FormHelperText>
+              </FormControl>
             </HStack>
           </VStack>
 

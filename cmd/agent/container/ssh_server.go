@@ -71,7 +71,7 @@ func getFileLogger(remoteUser string, debug bool) log.Logger {
 	}
 	fallback := log.NewDiscardLogger(logLevel)
 
-	targetFolder := filepath.Join(os.TempDir(), ".devpod")
+	targetFolder := filepath.Join(os.TempDir(), ".devpod-secrets")
 	if remoteUser != "" {
 		targetFolder = filepath.Join(BaseLogDir, remoteUser)
 	}

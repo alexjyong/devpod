@@ -42,6 +42,7 @@ import {
   useAgentURLOption,
   useDockerCredentialsForwardingOption,
   useGitCredentialsForwardingOption,
+  useInstallAgentBinaries,
   useTelemetryOption,
 } from "./useContextOptions"
 import { useIDESettings } from "./useIDESettings"
@@ -100,6 +101,7 @@ function GeneralSettings() {
     helpText: installCLIHelpText,
     errorMessage: installCLIErrorMessage,
   } = useInstallCLI()
+  const { input: installAgentBinariesInput, helpText: installAgentBinariesHelpText } = useInstallAgentBinaries()
 
   return (
     <>
@@ -109,6 +111,10 @@ function GeneralSettings() {
           {installCLIErrorMessage}
           {installCLIBadge}
         </HStack>
+      </SettingSection>
+
+      <SettingSection title="Agent Binaries" description={installAgentBinariesHelpText}>
+        {installAgentBinariesInput}
       </SettingSection>
 
       <SettingSection

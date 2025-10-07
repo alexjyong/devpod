@@ -101,7 +101,6 @@ fn main() -> anyhow::Result<()> {
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(move |app| {
             info!("Setup application");
 
@@ -119,17 +118,7 @@ fn main() -> anyhow::Result<()> {
             let custom_protocol = CustomProtocol::init();
             custom_protocol.setup(app.handle().clone());
 
-            let app_handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
-                let update_helper = updates::UpdateHelper::new(&app_handle);
-                if let Ok(releases) = update_helper.fetch_releases().await {
-                    let state = app_handle.state::<AppState>();
-                    let mut releases_state = state.releases.lock().unwrap();
-                    *releases_state = releases;
-                }
-
-                update_helper.poll().await;
-            });
+            // Auto-update disabled for DevPod Secrets to prevent binary replacement
 
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {

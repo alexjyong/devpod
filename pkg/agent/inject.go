@@ -124,7 +124,7 @@ func InjectAgentAndExecute(
 			}
 
 			if time.Since(lastMessage) > time.Second*5 {
-				log.Infof("Waiting for devpod agent to come up...")
+				log.Infof("Waiting for DevPod Secrets agent to come up...")
 				lastMessage = time.Now()
 			}
 
@@ -162,12 +162,17 @@ func injectBinary(arm bool, tryDownloadURL string, log log.Logger) (io.ReadClose
 		}
 	}
 
+	// try to find bundled Linux binary (for desktop app)
+	if binaryPath == "" {
+		binaryPath = findBundledLinuxBinary(targetArch, log)
+	}
+
 	// try to look up runner binaries
 	if binaryPath == "" {
 		binaryPath = getRunnerBinary(targetArch)
 	}
 
-	// download devpod locally
+	// download devpod-secrets-cli locally
 	if binaryPath == "" {
 		binaryPath, err = downloadAgentLocally(tryDownloadURL, targetArch, log)
 		if err != nil {
@@ -185,7 +190,7 @@ func injectBinary(arm bool, tryDownloadURL string, log log.Logger) (io.ReadClose
 }
 
 func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (string, error) {
-	agentPath := filepath.Join(os.TempDir(), "devpod-cache", "devpod-linux-"+targetArch)
+	agentPath := filepath.Join(os.TempDir(), "devpod-secrets-cache", "devpod-secrets-cli-linux-"+targetArch)
 	err := os.MkdirAll(filepath.Dir(agentPath), 0755)
 	if err != nil {
 		return "", fmt.Errorf("create agent path: %w", err)
@@ -196,12 +201,12 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 		return agentPath, nil
 	}
 
-	fullDownloadURL := tryDownloadURL + "/devpod-linux-" + targetArch
-	log.Debugf("Attempting to download DevPod agent from: %s", fullDownloadURL)
+	fullDownloadURL := tryDownloadURL + "/devpod-secrets-cli-linux-" + targetArch
+	log.Debugf("Attempting to download DevPod Secrets agent from: %s", fullDownloadURL)
 
 	resp, err := devpodhttp.GetHTTPClient().Get(fullDownloadURL)
 	if err != nil {
-		return "", fmt.Errorf("download devpod: %w", err)
+		return "", fmt.Errorf("download devpod-secrets-cli: %w", err)
 	}
 	defer resp.Body.Close()
 
@@ -209,7 +214,7 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 		return agentPath, nil
 	}
 
-	log.Infof("Download DevPod Agent...")
+	log.Infof("Download DevPod Secrets Agent...")
 	file, err := os.Create(agentPath)
 	if err != nil {
 		return "", fmt.Errorf("create agent binary: %w", err)
@@ -219,14 +224,64 @@ func downloadAgentLocally(tryDownloadURL, targetArch string, log log.Logger) (st
 	_, err = io.Copy(file, resp.Body)
 	if err != nil {
 		_ = os.Remove(agentPath)
-		return "", fmt.Errorf("failed to download devpod from URL %s: %w", fullDownloadURL, err)
+		return "", fmt.Errorf("failed to download devpod-secrets-cli from URL %s: %w", fullDownloadURL, err)
 	}
 
 	return agentPath, nil
 }
 
+// FindBundledLinuxBinary finds a bundled Linux binary for the given architecture
+func FindBundledLinuxBinary(arch string) (string, error) {
+	path := findBundledLinuxBinary(arch, log.Discard)
+	if path == "" {
+		return "", fmt.Errorf("no bundled Linux binary found for arch %s", arch)
+	}
+	return path, nil
+}
+
+func findBundledLinuxBinary(arch string, log log.Logger) string {
+	// Try to find bundled binary relative to current executable
+	execPath, err := os.Executable()
+	if err != nil {
+		return ""
+	}
+
+	execDir := filepath.Dir(execPath)
+	binaryName := fmt.Sprintf("devpod-secrets-cli-linux-%s", arch)
+
+	// Possible locations for bundled binary (Tauri resources)
+	searchPaths := []string{
+		// macOS app bundle structure: Contents/MacOS/exe -> Contents/Resources/bin/binary
+		filepath.Join(execDir, "..", "Resources", "bin", binaryName),
+		// Alternative macOS structure
+		filepath.Join(execDir, "..", "Resources", binaryName),
+		// Windows/Linux (resources in same directory)
+		filepath.Join(execDir, binaryName),
+		// Same directory as executable fallback
+		filepath.Join(execDir, binaryName),
+		// Check for installed DevPod Secrets app (common locations)
+		"/Applications/DevPod Secrets.app/Contents/Resources/bin/" + binaryName,
+		// User's Desktop (for development)
+		os.ExpandEnv("$HOME/Desktop/devpod-macos-arm64-debug/macos/DevPod Secrets.app/Contents/Resources/bin/") + binaryName,
+		// User's bin directory
+		os.ExpandEnv("$HOME/bin/") + binaryName,
+		// DevPod Secrets bin directory
+		os.ExpandEnv("$HOME/.devpod-secrets/bin/") + binaryName,
+	}
+
+	for _, bundledPath := range searchPaths {
+		if stat, err := os.Stat(bundledPath); err == nil && !stat.IsDir() {
+			log.Debugf("Found bundled Linux binary: %s", bundledPath)
+			return bundledPath
+		}
+	}
+
+	log.Debugf("No bundled Linux binary found for arch %s", arch)
+	return ""
+}
+
 func getRunnerBinary(targetArch string) string {
-	binaryPath := filepath.Join(os.TempDir(), "devpod-cache", "devpod-linux-"+targetArch)
+	binaryPath := filepath.Join(os.TempDir(), "devpod-secrets-cache", "devpod-secrets-cli-linux-"+targetArch)
 	_, err := os.Stat(binaryPath)
 	if err != nil {
 		return ""

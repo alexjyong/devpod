@@ -8,10 +8,10 @@ import (
 )
 
 // Override devpod home
-const DEVPOD_HOME = "DEVPOD_HOME"
+const DEVPOD_HOME = "DEVPOD_SECRETS_HOME"
 
 // Override config path
-const DEVPOD_CONFIG = "DEVPOD_CONFIG"
+const DEVPOD_CONFIG = "DEVPOD_SECRETS_CONFIG"
 
 func GetConfigDir() (string, error) {
 	homeDir := os.Getenv(DEVPOD_HOME)
@@ -24,7 +24,7 @@ func GetConfigDir() (string, error) {
 		return "", err
 	}
 
-	configDir := filepath.Join(homeDir, ".devpod")
+	configDir := filepath.Join(homeDir, ".devpod-secrets")
 	return configDir, nil
 }
 

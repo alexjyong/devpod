@@ -24,15 +24,15 @@ import (
 
 const DefaultInactivityTimeout = time.Minute * 20
 
-const ContainerDevPodHelperLocation = "/usr/local/bin/devpod"
+const ContainerDevPodHelperLocation = "/usr/local/bin/devpod-secrets-cli"
 
-const RemoteDevPodHelperLocation = "/tmp/devpod"
+const RemoteDevPodHelperLocation = "/tmp/devpod-secrets-cli"
 
 const ContainerActivityFile = "/tmp/devpod.activity"
 
-const defaultAgentDownloadURL = "https://github.com/loft-sh/devpod/releases/download/"
+const defaultAgentDownloadURL = "https://github.com/alexjyong/devpod/releases/download/"
 
-const EnvDevPodAgentURL = "DEVPOD_AGENT_URL"
+const EnvDevPodAgentURL = "DEVPOD_SECRETS_AGENT_URL"
 
 const WorkspaceBusyFile = "workspace.lock"
 
@@ -43,7 +43,7 @@ func DefaultAgentDownloadURL() string {
 	}
 
 	if version.GetVersion() == version.DevVersion {
-		return "https://github.com/loft-sh/devpod/releases/latest/download/"
+		return "https://github.com/alexjyong/devpod/releases/latest/download/"
 	}
 
 	return defaultAgentDownloadURL + version.GetVersion()

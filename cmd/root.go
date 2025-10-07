@@ -30,8 +30,8 @@ var globalFlags *flags.GlobalFlags
 // NewRootCmd returns a new root command
 func NewRootCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:           "devpod",
-		Short:         "DevPod",
+		Use:           "devpod-secrets",
+		Short:         "DevPod Secrets",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PersistentPreRunE: func(cobraCmd *cobra.Command, args []string) error {

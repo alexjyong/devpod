@@ -317,13 +317,13 @@ class Client {
         const home_dir = await this.getEnv("HOME")
         // this will throw if doesn't exist
         const exists = await invoke<boolean>("file_exists", {
-          filepath: home_dir + "/.local/bin/devpod",
+          filepath: home_dir + "/.local/bin/devpod-secrets-cli",
         })
 
         return Return.Value(exists)
       }
 
-      const result = await Command.create("run-path-devpod-cli", ["version"]).execute()
+      const result = await Command.create("run-path-devpod-secrets-cli", ["version"]).execute()
       if (result.code !== 0) {
         return Return.Value(false)
       }

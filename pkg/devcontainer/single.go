@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -342,6 +343,10 @@ func (r *runner) addExtraEnvVars(env map[string]string) map[string]string {
 	}
 	if r.WorkspaceConfig != nil && r.WorkspaceConfig.Workspace != nil && r.WorkspaceConfig.Workspace.UID != "" {
 		env[WorkspaceUIDExtraEnvVar] = r.WorkspaceConfig.Workspace.UID
+	}
+
+	if dockerPlatform := os.Getenv("DOCKER_DEFAULT_PLATFORM"); dockerPlatform != "" {
+		env["DOCKER_DEFAULT_PLATFORM"] = dockerPlatform
 	}
 
 	// inject secrets as environment variables

@@ -178,6 +178,8 @@ export class WorkspaceCommands {
       Command.ADDITIONAL_ENV_VARS = currentEnvVars 
         ? `${currentEnvVars},${dockerPlatformEnv}`
         : dockerPlatformEnv
+      console.log(`[DEBUG] Setting Docker platform: ${config.dockerPlatform}`)
+      console.log(`[DEBUG] Environment vars: ${Command.ADDITIONAL_ENV_VARS}`)
     }
 
     const command = WorkspaceCommands.newCommand([
@@ -199,6 +201,7 @@ export class WorkspaceCommands {
       const currentEnvVars = Command.ADDITIONAL_ENV_VARS
       const dockerPlatformEnv = `DOCKER_DEFAULT_PLATFORM=${config.dockerPlatform}`
       Command.ADDITIONAL_ENV_VARS = currentEnvVars.replace(dockerPlatformEnv, "").replace(/^,|,$|,,/g, "")
+      console.log(`[DEBUG] Reset environment vars: ${Command.ADDITIONAL_ENV_VARS}`)
     }
 
     return command

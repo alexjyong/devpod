@@ -21,6 +21,7 @@ import { IDEsClient } from "./ides"
 import { ProClient } from "./pro"
 import { DaemonClient } from "./pro/client"
 import { ProvidersClient } from "./providers"
+import { SecretsClient } from "./secrets"
 import { TAURI_SERVER_URL } from "./tauriClient"
 import { WorkspacesClient } from "./workspaces"
 
@@ -88,6 +89,7 @@ class Client {
   public readonly ides = new IDEsClient()
   public readonly context = new ContextClient()
   public readonly pro = new ProClient("")
+  public readonly secrets = new SecretsClient()
 
   public setSetting<TSettingName extends keyof TClientSettings>(
     name: TSettingName,
@@ -315,13 +317,13 @@ class Client {
         const home_dir = await this.getEnv("HOME")
         // this will throw if doesn't exist
         const exists = await invoke<boolean>("file_exists", {
-          filepath: home_dir + "/.local/bin/devpod",
+          filepath: home_dir + "/.local/bin/devpod-secrets-cli",
         })
 
         return Return.Value(exists)
       }
 
-      const result = await Command.create("run-path-devpod-cli", ["version"]).execute()
+      const result = await Command.create("run-path-devpod-secrets-cli", ["version"]).execute()
       if (result.code !== 0) {
         return Return.Value(false)
       }

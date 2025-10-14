@@ -63,7 +63,7 @@ func (cmd *UpdateCmd) Run(ctx context.Context, devPodConfig *config.Config, args
 	if cmd.Use {
 		err = ConfigureProvider(ctx, providerConfig, devPodConfig.DefaultContext, cmd.Options, false, false, false, nil, log.Default)
 		if err != nil {
-			log.Default.Errorf("Error configuring provider, please retry with 'devpod provider use %s --reconfigure'", providerConfig.Name)
+			log.Default.Errorf("Error configuring provider, please retry with 'devpod-secrets-cli provider use %s --reconfigure'", providerConfig.Name)
 			return errors.Wrap(err, "configure provider")
 		}
 
@@ -71,6 +71,6 @@ func (cmd *UpdateCmd) Run(ctx context.Context, devPodConfig *config.Config, args
 	}
 
 	log.Default.Infof("To use the provider, please run the following command:")
-	log.Default.Infof("devpod provider use %s", providerConfig.Name)
+	log.Default.Infof("devpod-secrets-cli provider use %s", providerConfig.Name)
 	return nil
 }

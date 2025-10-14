@@ -25,7 +25,7 @@ const (
 	PanicSeverity   ErrorSeverityType = "panic"
 )
 
-const UIEnvVar = "DEVPOD_UI"
+const UIEnvVar = "DEVPOD_SECRETS_UI"
 
 var UIEventsExceptions []string = []string{
 	"devpod list",

@@ -165,6 +165,7 @@ export type TWorkspaceStartConfig = Readonly<{
   id: string
   prebuildRepositories?: string[]
   devcontainerPath?: string
+  dockerPlatform?: string
   ideConfig?: TWorkspace["ide"]
   providerConfig?: Readonly<{ providerID?: TProviderID; options?: Record<string, string> }>
   // Instead of starting a workspace just by ID, the sourceConfig starts it with a `source/ID` combination
@@ -306,6 +307,22 @@ export type TGitCredentialHelperData = Readonly<{
   path?: string
   username?: string
   password: string
+}>
+
+export type TSecretScope = "global" | "provider" | "workspace"
+
+export type TSecret = Readonly<{
+  name: string
+  value: string
+  scope: TSecretScope
+  target?: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+}>
+
+export type TSecretStore = Readonly<{
+  secrets: Record<string, TSecret>
 }>
 
 export function isWithWorkspaceID(arg: unknown): arg is TWithWorkspaceID {

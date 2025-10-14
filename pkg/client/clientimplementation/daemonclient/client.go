@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	DevPodDebug = "DEVPOD_DEBUG"
+	DevPodDebug = "DEVPOD_SECRETS_DEBUG"
 
 	DevPodFlagsUp     = "DEVPOD_FLAGS_UP"
 	DevPodFlagsSsh    = "DEVPOD_FLAGS_SSH"
@@ -152,9 +152,9 @@ func (c *client) CheckWorkspaceReachable(ctx context.Context) error {
 		if getWorkspaceErr != nil {
 			return fmt.Errorf("couldn't get workspace: %w", getWorkspaceErr)
 		} else if instance.Status.Phase != storagev1.InstanceReady {
-			return fmt.Errorf("workspace is '%s', please run `devpod up %s` to start it again", instance.Status.Phase, c.workspace.ID)
+			return fmt.Errorf("workspace is '%s', please run `devpod-secrets-cli up %s` to start it again", instance.Status.Phase, c.workspace.ID)
 		} else if instance.Status.LastWorkspaceStatus != storagev1.WorkspaceStatusRunning {
-			return fmt.Errorf("workspace is '%s', please run `devpod up %s` to start it again", instance.Status.LastWorkspaceStatus, c.workspace.ID)
+			return fmt.Errorf("workspace is '%s', please run `devpod-secrets-cli up %s` to start it again", instance.Status.LastWorkspaceStatus, c.workspace.ID)
 		}
 
 		return fmt.Errorf("reach host: %w", err)

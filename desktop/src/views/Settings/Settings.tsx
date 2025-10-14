@@ -42,6 +42,7 @@ import {
   useAgentURLOption,
   useDockerCredentialsForwardingOption,
   useGitCredentialsForwardingOption,
+  useInstallAgentBinaries,
   useTelemetryOption,
 } from "./useContextOptions"
 import { useIDESettings } from "./useIDESettings"
@@ -52,10 +53,12 @@ import {
   useProxyOptions,
   useSSHKeySignatureOption,
 } from "./useSettingsOptions"
+import { SecretsSettings } from "./SecretsSettings"
 
 const SETTINGS_TABS = [
   { label: "General", component: <GeneralSettings /> },
   { label: "Customization", component: <CustomizationSettings /> },
+  { label: "Secrets", component: <SecretsSettings /> },
   { label: "Appearance", component: <AppearanceSettings /> },
   { label: "Updates", component: <UpdateSettings /> },
   { label: "Experimental", component: <ExperimentalSettings /> },
@@ -98,6 +101,7 @@ function GeneralSettings() {
     helpText: installCLIHelpText,
     errorMessage: installCLIErrorMessage,
   } = useInstallCLI()
+  const { input: installAgentBinariesInput, helpText: installAgentBinariesHelpText } = useInstallAgentBinaries()
 
   return (
     <>
@@ -107,6 +111,10 @@ function GeneralSettings() {
           {installCLIErrorMessage}
           {installCLIBadge}
         </HStack>
+      </SettingSection>
+
+      <SettingSection title="Agent Binaries" description={installAgentBinariesHelpText}>
+        {installAgentBinariesInput}
       </SettingSection>
 
       <SettingSection

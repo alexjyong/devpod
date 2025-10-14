@@ -21,7 +21,7 @@ Prerequisites CLI:
 - [Go 1.20](https://go.dev/doc/install)
 
 Once installed, run
-`CGO_ENABLED=0 go build -ldflags "-s -w" -o devpod-cli`
+`CGO_ENABLED=0 go build -ldflags "-s -w" -o devpod-secrets-cli`
 
 Prerequisites GUI:
 

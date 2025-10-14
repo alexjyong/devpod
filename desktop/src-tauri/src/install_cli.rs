@@ -64,11 +64,11 @@ fn install(_app_handle: AppHandle, force: bool) -> Result<(), InstallCLIError> {
 
     let cli_path = get_cli_path().map_err(InstallCLIError::NoExePath)?;
 
-    // The binary we ship with is `devpod-cli`, but we want to link it to `devpod` so that users can just run `devpod` in their terminal
+    // The binary we ship with is `devpod-secrets-cli`, but we want to link it to `devpod-secrets` so that users can just run `devpod-secrets` in their terminal
     let mut target_paths: Vec<PathBuf> = vec![];
 
-    // /usr/local/bin/devpod
-    let raw_system_bin = format!("/usr/local/bin/{}", "devpod");
+    // /usr/local/bin/devpod-secrets-cli
+    let raw_system_bin = format!("/usr/local/bin/{}", "devpod-secrets-cli");
     target_paths.push(PathBuf::from(&raw_system_bin));
 
     if force {
@@ -86,13 +86,13 @@ fn install(_app_handle: AppHandle, force: bool) -> Result<(), InstallCLIError> {
     }
 
     if let Some(home) = home_dir() {
-        // $HOME/bin/devpod
+        // $HOME/bin/devpod-secrets-cli
         let mut user_bin = home.clone();
-        user_bin.push("bin/devpod");
+        user_bin.push("bin/devpod-secrets-cli");
 
-        // $HOME/.local/bin/devpod
+        // $HOME/.local/bin/devpod-secrets-cli
         let mut user_local_bin = home;
-        user_local_bin.push(".local/bin/devpod");
+        user_local_bin.push(".local/bin/devpod-secrets-cli");
 
         // create .local/bin if necessary
         if let Some(path) = user_local_bin.clone().parent() {
@@ -249,13 +249,13 @@ fn install(app_handle: AppHandle, force: bool) -> Result<(), InstallCLIError> {
     let cli_path = cli_path.to_str().ok_or(InstallCLIError::PathConversion)?;
 
     let sh_file = BinFile {
-        name: "devpod".to_string(),
+        name: "devpod-secrets-cli".to_string(),
         // WARN: we actually need to debug print here because this escapes the backslash to `\\` and will then be recognised by the shell
         content: format!("#!/usr/bin/env sh\n{:?}.exe \"$@\" \nexit $?", cli_path),
     };
 
     let cmd_file = BinFile {
-        name: format!("{}.cmd", "devpod".to_string()),
+        name: format!("{}.cmd", "devpod-secrets-cli".to_string()),
         content: format!("@echo off\n\"{}.exe\" %*", cli_path),
     };
 

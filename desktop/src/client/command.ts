@@ -45,19 +45,24 @@ export class Command implements TCommand<ChildProcess<string>> {
 
   constructor(args: string[]) {
     debug("commands", "Creating Devpod command with args: ", args)
-    this.extraEnvVars = Command.ADDITIONAL_ENV_VARS.split(",")
-      .map((envVarStr) => envVarStr.split("="))
-      .reduce(
-        (acc, pair) => {
-          const [key, value] = pair
-          if (key === undefined || value === undefined) {
-            return acc
-          }
+    console.log(`[DEBUG] Command.ADDITIONAL_ENV_VARS: "${Command.ADDITIONAL_ENV_VARS}"`)
+    this.extraEnvVars = Command.ADDITIONAL_ENV_VARS
+      ? Command.ADDITIONAL_ENV_VARS.split(",")
+          .filter(envVarStr => envVarStr.trim() !== "")
+          .map((envVarStr) => envVarStr.split("="))
+          .reduce(
+            (acc, pair) => {
+              const [key, value] = pair
+              if (key === undefined || value === undefined) {
+                return acc
+              }
 
-          return { ...acc, [key]: value }
-        },
-        {} as Record<string, string>
-      )
+              return { ...acc, [key]: value }
+            },
+            {} as Record<string, string>
+          )
+      : {}
+    console.log(`[DEBUG] Parsed extraEnvVars:`, this.extraEnvVars)
 
     // set proxy related environment variables
     if (Command.HTTP_PROXY) {

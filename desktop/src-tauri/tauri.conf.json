@@ -20,9 +20,12 @@
     "category": "DeveloperTool",
     "copyright": "",
     "externalBin": [
-      "bin/devpod-cli"
+      "bin/devpod-secrets-cli"
     ],
-    "resources": [],
+    "resources": [
+      "bin/devpod-secrets-cli-linux-amd64",
+      "bin/devpod-secrets-cli-linux-arm64"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -68,14 +71,7 @@
   "identifier": "sh.loft.devpod",
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY1NDg1NDE4MzA1NDI3QjcKUldTM0oxUXdHRlJJOVhyNUtFc2xkNFZyTmE2R2w0dTRXTFF6OUVMSW03ekphejlPM3U1M2FHUCsK",
-      "windows": {
-        "installMode": "passive"
-      },
-      "endpoints": [
-        "https://update-server.devpod.sh/latest",
-        "https://github.com/loft-sh/devpod/releases/latest/download/latest.json"
-      ]
+      "active": false
     }
   },
   "app": {

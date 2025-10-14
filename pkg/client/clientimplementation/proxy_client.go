@@ -26,7 +26,7 @@ import (
 )
 
 var (
-	DevPodDebug = "DEVPOD_DEBUG"
+	DevPodDebug = "DEVPOD_SECRETS_DEBUG"
 
 	DevPodPlatformOptions = "DEVPOD_PLATFORM_OPTIONS"
 
@@ -241,7 +241,7 @@ func (s *proxyClient) Up(ctx context.Context, opt client.UpOptions) error {
 		s.log.ErrorStreamOnly(),
 	)
 	if err != nil {
-		return fmt.Errorf("error running devpod up: %w", err)
+		return fmt.Errorf("error running devpod-secrets-cli up: %w", err)
 	}
 
 	return nil
